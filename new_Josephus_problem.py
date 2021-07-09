@@ -19,7 +19,7 @@ def input_people_list():
         people_list.append(people(people_number,people_name,people_gender))
     return people_list
 
-def Josephus_problem(people_list,killed_step,killed_index):
+def josephus_problem(people_list,killed_step,killed_index):
     assert len(people_list)>0
     assert killed_step>0
     assert killed_index<=len(people_list)
@@ -28,13 +28,13 @@ def Josephus_problem(people_list,killed_step,killed_index):
     people_list.pop(killed_index)
     return people_list,killed_index
 
-def Josephus_survival_list(killed_step,killed_index):
+def josephus_survival_list(killed_step,killed_index):
     for i in range(len(people_list)-1):
-        (survival_list,killed_index)=Josephus_problem(people_list,killed_step,killed_index)
+        (survival_list,killed_index)=josephus_problem(people_list,killed_step,killed_index)
         print("当前剩余%d人："%len(survival_list))
         for people in survival_list:
             print(people.people_number,people.people_name,people.people_gender)
 
 if __name__ == '__main__':
     people_list=input_people_list()
-    Josephus_survival_list(3,0)
+    josephus_survival_list(3,0)

@@ -1,49 +1,55 @@
 # -*- coding: utf-8 -*
 import zipfile
 import csv
-import pandas as pd
 import xlrd as xd
 
 class Reader(object):
-    def creat_list(person_message,read_list):
-        person_number,person_name,person_gender=person_message
-        read_list.append(
-            Person(person_number,person_name,person_gender))
-        return read_list
+    def __init__(self,filename,inter_filename=''):
+        self.filename=filename
+        self.inter_filename=inter_filename
 
-class ZipReader(object):
-    def zip_reader(zip_name,inter_filename):
-        zip_file=zipfile.ZipFile(zip_name,'r')
-        read_file=zip_file.extract(inter_filename)
-        if inter_filename.endswith(".csv"):
-            person_list=CsvReader.csv_reader(read_file)
+
+class ZipReader(Reader):
+    def zip_reader(self):
+        assert self.inter_filename.endswith(".csv")or self.inter_filename.endswith(".xlsx")
+        
+        zip_file=zipfile.ZipFile(self.filename,'r')
+        read_file=zip_file.extract(self.inter_filename)
+
+        if self.inter_filename.endswith(".csv"):
+            person_list=CsvReader(read_file).csv_reader()
             return person_list
-        elif inter_filename.endswith(".xlsx"):
-             person_list=ExcelReader.excel_reader(read_file)
-             return person_list
-        else:
-            print('该文件类型不可读！')
+        else: 
+              person_list=ExcelReader(read_file).excel_reader()
+              return person_list
 
-class CsvReader(object):
-    def csv_reader(csv_name):
-        with open(csv_name,'r',encoding="utf-8")as file:
+
+class CsvReader(Reader):
+    def csv_reader(self):
+        assert self.filename.endswith(".csv")
+
+        with open(self.filename,'r',encoding="utf-8")as file:
+            person_list=[]
             csv_file=csv.reader(file)
             next(csv_file)
-            person_list=[]
 
             for rows in csv_file:
-                person_list=Reader.creat_list(rows,person_list)
+                person_list=creat_people_list(rows,person_list)
             return person_list
 
-class ExcelReader(object):
-    def excel_reader(excel_name):
-        excel_file=xd.open_workbook(excel_name,"r")
-        sheet=excel_file.sheet_by_name("Sheet1")
+
+class ExcelReader(Reader):
+    def excel_reader(self):
+        assert self.filename.endswith(".xlsx")
+
         person_list=[]
+        excel_file=xd.open_workbook(self.filename,"r")
+        sheet=excel_file.sheet_by_name("Sheet1")
 
         for row in range(1,sheet.nrows):
-            person_list=Reader.creat_list(sheet.row_values(row),person_list)
+            person_list=creat_people_list(sheet.row_values(row),person_list)
         return person_list
+
 
 class Person(object):
     def __init__(self,person_number,person_name,person_gender):
@@ -53,6 +59,14 @@ class Person(object):
 
     def print_person(person):
         print(person.person_number,person.person_name,person.person_gender)
+
+
+def creat_people_list(person_attri,read_list):
+    person_number,person_name,person_gender=person_attri
+    read_list.append(
+        Person(person_number,person_name,person_gender))
+    return read_list
+
 
 def josephus_problem(people_list,killed_step,killed_index,killed_list):
     assert len(people_list)>0
@@ -64,6 +78,7 @@ def josephus_problem(people_list,killed_step,killed_index,killed_list):
         people_list.pop(killed_index))
     return killed_index,killed_list
 
+
 def josephus_ring_list(killed_step,killed_index):
     killed_list=[]
     for i in range(len(people_list)):
@@ -72,8 +87,9 @@ def josephus_ring_list(killed_step,killed_index):
     for person in killed_list:
         person.print_person()       
 
+
 if __name__ == '__main__':
-    #people_list=ExcelReader.excel_reader('person_list_xlsx.xlsx)
-    #people_list=CsvReader.csv_reader('person_list_csv.csv')
-    people_list=ZipReader.zip_reader('test_zip_file.zip','person_list_csv.csv')
+    #people_list=ExcelReader("person_list_xlsx.xlsx").excel_reader()
+    #people_list=CsvReader('person_list_csv.csv').csv_reader()
+    people_list=ZipReader('test_zip_file.zip','person_list_csv.csv').zip_reader()
     josephus_ring_list(3,0)

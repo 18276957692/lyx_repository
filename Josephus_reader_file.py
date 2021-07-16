@@ -116,4 +116,4 @@ if __name__ == '__main__':
     killed_list=JosephusCircle(people_list,STEP,START) 
 
     for person in killed_list:
-        print(person.id,person.name,person.gender)
+        print(person)

@@ -48,7 +48,7 @@ class Window(QDialog):
         self.button_excel.clicked.connect(self.get_peoplelist_from_excel)
         self.button_zip_csv.clicked.connect(self.get_peoplelist_from_zip_csv)
         self.button_zip_excel.clicked.connect(self.get_peoplelist_from_zip_excel)
-        self.button_josephus.clicked.connect(self.output_josuphus_list)
+        self.button_josephus.clicked.connect(self.output_josuphus_circle)
 
     def get_peoplelist_from_csv(self):
         people_list=CsvReader(CSV_FILE).read()
@@ -66,12 +66,12 @@ class Window(QDialog):
         people_list=ZipReader(ZIP_FILE,EXCEL_FILE).read()
         self.text.setPlainText(f'''{people_list}''')
 
-    def output_josuphus_list(self): 
+    def output_josuphus_circle(self): 
         input_people=self.text.toPlainText()
         people_list=input_people.split('[[')[1].split(']]')[0]
-        josuphus_list=JosephusCircle(people_list.split("], ["),STEP,START) 
+        killed_list=JosephusCircle(people_list.split("], ["),STEP,START) 
         people=[]
-        for person in josuphus_list:
+        for person in killed_list:
             people.append(person.__str__())
             self.text.setPlainText(f'''{people}''')
 

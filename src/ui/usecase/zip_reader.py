@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 import zipfile
 
-from .entity.reader import Reader
+from .reader import Reader
 from .csv_reader import CsvReader
 from .excel_reader import ExcelReader
 

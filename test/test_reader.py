@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import unittest
 
 from src.ui.usecase.csv_reader import CsvReader

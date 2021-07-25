@@ -15,11 +15,11 @@ from PySide6.QtWidgets import (
     QMessageBox
 )
 
-from usecase.josephus_iter import JosephusCircle
-from usecase.entity.person import Person
-from usecase.csv_reader import CsvReader
-from usecase.zip_reader import ZipReader
-from usecase.excel_reader import ExcelReader
+from .usecase.josephus_iter import JosephusCircle
+from .usecase.entity.person import Person
+from .usecase.csv_reader import CsvReader
+from .usecase.zip_reader import ZipReader
+from .usecase.excel_reader import ExcelReader
 
 
 CSV_FILE = "test\\resource\\person_list_csv.csv"
@@ -59,25 +59,25 @@ class JosephusWindow(QDialog):
         layout.addWidget(self.button_josephus)
         self.setLayout(layout)
 
-        self.button_csv.clicked.connect(self.get_peoplelist_from_csv)              
-        self.button_excel.clicked.connect(self.get_peoplelist_from_excel)
-        self.button_csv_in_zip.clicked.connect(self.get_peoplelist_from_zip_csv)
-        self.button_excel_in_zip.clicked.connect(self.get_peoplelist_from_zip_excel)
+        self.button_csv.clicked.connect(self.load_list_from_csv)              
+        self.button_excel.clicked.connect(self.load_list_from_excel)
+        self.button_csv_in_zip.clicked.connect(self.load_list_from_zip_csv)
+        self.button_excel_in_zip.clicked.connect(self.load_list_from_zip_excel)
         self.button_josephus.clicked.connect(self.output_josuphus_circle)
 
-    def get_peoplelist_from_csv(self):
+    def load_list_from_csv(self):
         people_list = CsvReader(CSV_FILE).read()
         self.text.setPlainText(f"""{people_list}""")
 
-    def get_peoplelist_from_excel(self):
+    def load_list_from_excel(self):
         people_list = ExcelReader(EXCEL_FILE,SHEET_NAME).read()
         self.text.setPlainText(f"""{people_list}""")
 
-    def get_peoplelist_from_zip_csv(self):
+    def load_list_from_zip_csv(self):
         people_list = ZipReader(ZIP_FILE,CSV_IN_ZIP_FILE).read()
         self.text.setPlainText(f"""{people_list}""")
 
-    def get_peoplelist_from_zip_excel(self):
+    def load_list_from_zip_excel(self):
         people_list = ZipReader(ZIP_FILE,EXCEL_IN_ZIP_FILE).read()
         self.text.setPlainText(f"""{people_list}""")
 
@@ -90,9 +90,3 @@ class JosephusWindow(QDialog):
             people.append(person.__str__())
             self.text.setPlainText(f"""{people}""")
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = JosephusWindow()
-    window.show()
-    sys.exit(app.exec_())

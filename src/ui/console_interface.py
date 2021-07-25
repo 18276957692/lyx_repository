@@ -2,13 +2,13 @@
 import csv
 import click
 
-from use_case.entity.josephus_iter import JosephusCircle
-from use_case.entity.person import Person
-from use_case.zip_reader import ZipReader
-from use_case.excel_reader import ExcelReader
-from use_case.csv_reader import CsvReader
+from .usecase.josephus_iter import JosephusCircle
+from .usecase.entity.person import Person
+from .usecase.zip_reader import ZipReader
+from .usecase.excel_reader import ExcelReader
+from .usecase.csv_reader import CsvReader
 
-CSV_FILE = "test\\esource\\person_list_csv.csv"
+CSV_FILE = "test\\resource\\person_list_csv.csv"
 EXCEL_FILE = "test\\resource\\person_list_xlsx.xlsx"
 ZIP_FILE = "test\\resource\\test_zip_file.zip"
 CSV_END = ".csv"
@@ -19,7 +19,7 @@ START = 0
 
 # @click.command()
 # @click.option('--file_type', type=click.Choice(['csv','excel','csv_in_zip','excel_in_zip']),help='type of file')
-def josephus_control_interface():
+def josephus_console_interface():
     print("文件类型可选：'csv','excel','csv_in_zip','excel_in_zip'")
     file_type = input("请输入需要读取的文件类型：")
     assert (
@@ -52,7 +52,3 @@ def josephus_control_interface():
     print("约瑟夫环人员弹出顺序：")
     for person in killed_list:
         print(person)
-
-
-if __name__ == "__main__":
-    josephus_control_interface()

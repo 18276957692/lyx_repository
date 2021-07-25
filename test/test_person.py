@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*
 import unittest
-import sys
-sys.path.append("F:\\sumer\\josephus\\src\\ui\\usecase\\entity\\person.py")
-from person import Person
+#import sys
+#sys.path.append("F:\\sumer\\josephus\\\\src\\ui\\usecase\\entity\\person.py")
+from src.ui.usecase.entity.person import Person
 
 
 class TestPerson(unittest.TestCase):
